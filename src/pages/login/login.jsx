@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button } from 'antd';
 import Admin from "../admin/admin"
-import {BrowserRouter,Switch,Route} from 'react-router-dom'
+import {loginRequest} from "../../api/aj"
+import axios from 'axios'
 import "./login.less"
 import logo from '../../assets/img/1.jpg'
 const Item = Form.Item
@@ -11,19 +12,19 @@ class Login extends Component {
         const form = this.props.form
         // 获取绑定的值
 
-        const val = form.getFieldsValue()
-        console.log(val)
+        // const val = form.getFieldsValue()
+      
         //同一验证validateFields
-        form.validateFields((err,result)=>{
+        form.validateFields((err,{username,password})=>{
             if(!err){
-              console.log("登录成功")
+                loginRequest(username,password)
             }
         })
     }
     //验证密码
     pwdValidateHandler =(ruls,value,callback)=>{
         value = value.trim();
-        console.log(value)
+        
         if(!value){
             callback("密码不能为空")
         }else if(value.length < 4){
