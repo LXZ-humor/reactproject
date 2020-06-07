@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button,message } from 'antd';
 import Admin from "../admin/admin"
 import {loginRequest} from "../../api/aj"
 import axios from 'axios'
@@ -15,9 +15,15 @@ class Login extends Component {
         // const val = form.getFieldsValue()
       
         //同一验证validateFields
-        form.validateFields((err,{username,password})=>{
+        form.validateFields(async (err,{username,password})=>{
             if(!err){
-                loginRequest(username,password)
+                let result = await loginRequest(username,password)
+               if(result.status == 0){
+                   message.success("登录成功")
+                   this.props.history.push('/admin')
+               }else{
+                   message.error(result.mes)
+               }
             }
         })
     }

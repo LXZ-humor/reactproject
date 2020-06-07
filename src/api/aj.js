@@ -1,7 +1,4 @@
-import axios from 'axios'
+import ajax from "./ajax"
 export const loginRequest =(username,password)=>{
-    return axios.post("/login",{username,password}).then(resdata => {
-        console.log(resdata)
-    })
-   
+   return ajax.post("/login",{username,password})
 }
