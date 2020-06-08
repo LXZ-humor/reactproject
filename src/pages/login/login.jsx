@@ -1,25 +1,29 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button,message } from 'antd';
+import {Redirect} from "react-router-dom"
 import Admin from "../admin/admin"
 import {loginRequest} from "../../api/aj"
 import axios from 'axios'
 import "./login.less"
 import logo from '../../assets/img/1.jpg'
+import menlocal from "../../util/menlocal"
+import local from "../../util/localStorage"
 const Item = Form.Item
 class Login extends Component {
     handleSubmit = e=>{
         e.preventDefault()
         const form = this.props.form
         // 获取绑定的值
-
-        // const val = form.getFieldsValue()
-      
+         // const val = form.getFieldsValue()
         //同一验证validateFields
         form.validateFields(async (err,{username,password})=>{
             if(!err){
                 let result = await loginRequest(username,password)
-               if(result.status == 0){
+                
+               if(result.status === 0){
                    message.success("登录成功")
+                   local.setlocal(result)
+                     menlocal.isLogin = result.result;
                    this.props.history.push('/admin')
                }else{
                    message.error(result.mes)
@@ -48,6 +52,10 @@ class Login extends Component {
     }
     render() {
         const {getFieldDecorator} = this.props.form
+         const localid = menlocal.isLogin;
+        if(localid._id){
+                return <Redirect to="/admin" />
+        }
         return (
             <div className="login">
                 <div className="login-header">
