@@ -24,8 +24,7 @@ class Login extends Component {
                    message.success("登录成功")
                    local.setlocal(result)
                      menlocal.isLogin = result.result;
-                   this.props.history.push('/admin')
-               }else{
+                   this.props.history.push('/admin')               }else{
                    message.error(result.mes)
                }
             }

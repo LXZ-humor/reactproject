@@ -5,7 +5,7 @@
 }
 .login .login-header {
   display: flex;
-  height: 267px;
+  height: 207px;
   align-items: center;
 }
 .login img {
@@ -24,8 +24,8 @@
   position: relative;
   padding: 30px;
   width: 400px;
-  height: 100%;
-  top: -80px;
+  height: 40%;
+  top: -90px;
   background: transparent;
   border: 1px solid #7b68ee;
   margin: 50px auto;
