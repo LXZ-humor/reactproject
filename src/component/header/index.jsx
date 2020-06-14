@@ -23,31 +23,10 @@ class Header extends Component{
     componentWillMount(){
       clearInterval(this.timer)
     }
-    // showModal = () => {
-    //     this.setState({
-    //       visible: true,
-    //     });
-    //   };
-    
-      // handleOk = e => {
-      //   local.removelocal();
-      //   menlocal.isLogin ={}
-      //   this.props.history.push("/login");
-      //   this.setState({
-      //     visible: false,
-      //   });
-      // };
-    
-      // handleCancel = e => {
-       
-      //   this.setState({
-      //     visible: false,
-      //   });
-      // };
       // 获取菜单title
       getTitle = menuList => {
         const path = this.props.location.pathname
-        console.log(path)
+     
         menuList.forEach(item => {
             if (item.key === path) {
                 this.title = item.title
@@ -57,6 +36,7 @@ class Header extends Component{
             }
         })
     }
+    // 退出
     handleCheckout = () => {
       // const that = this
       const { confirm } = Modal
@@ -64,7 +44,7 @@ class Header extends Component{
           title: '确认退出吗?',
           onOk: () => {
               // 删除用户登陆信息(1)本地local (2)内存
-              local.removeLoginData()
+              local.removelocal();
               menlocal.isLogin = {}
 
               this.props.history.replace('/login')

@@ -3,8 +3,14 @@ import React,{Component} from "react"
 import { Form, Input } from 'antd'
 
  class CategoryForm extends Component{
+     componentWillMount(){
+        
+         this.props.getForm(this.props.form)
+        
+     }
     render(){
         const {getFieldDecorator} = this.props.form
+       
         return(
             <Form>
             <Form.Item>

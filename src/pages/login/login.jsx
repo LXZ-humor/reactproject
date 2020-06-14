@@ -24,7 +24,9 @@ class Login extends Component {
                    message.success("登录成功")
                    local.setlocal(result)
                      menlocal.isLogin = result.result;
-                   this.props.history.push('/admin')               }else{
+                    
+                     this.props.history.push('/')              
+                }else{
                    message.error(result.mes)
                }
             }
@@ -52,8 +54,10 @@ class Login extends Component {
     render() {
         const {getFieldDecorator} = this.props.form
          const localid = menlocal.isLogin;
+         
         if(localid._id){
-                return <Redirect to="/admin" />
+           
+                return <Redirect to="/" />
         }
         return (
             <div className="login">

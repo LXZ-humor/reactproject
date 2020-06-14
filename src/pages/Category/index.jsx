@@ -1,10 +1,22 @@
 import React, { Component } from 'react'
 import { Card,Table,Modal, Button} from 'antd';
 import CategoryForm from "./CategoryForm"
+import {reqAddCategory} from "../../api/aj"
 import "./index.less"
+
+
 export default class index extends Component {
-    state = { visible: false };
-            // 测试数据获取字段
+    state = { 
+        visible: false,
+        loading:false,
+        categorys:[],//所有分类
+        showStatus: 0 // 0 不显示  1 显示添加  2显示修改
+
+       };
+       componentWillMount(){
+        this.getcolumns();
+    }
+        // 测试数据获取字段
         getcolumns = ()=>{
             this.columns = [
                 {
@@ -19,34 +31,34 @@ export default class index extends Component {
                 },
             ];
         }
-        componentWillMount(){
-            this.getcolumns();
-        }
        
-
-        showModal = () => {
-          this.setState({
-            visible: true,
-          });
-        };
-      
+      // 添加
         handleOk = e => {
-          console.log(e);
+         
+         this.form.validateFields(async (err,value)=>{
+           if(!err){
+             let {categoryName} = value;
+             let { showStatus } = this.state;
+             let result = ""
+             if(showStatus == 1){
+              //  console.log(categoryName resetFields)
+              result = await reqAddCategory(categoryName)
+             }
+           }
+         })
           this.setState({
             visible: false,
           });
         };
-      
-        handleCancel = e => {
-          console.log(e);
-          this.setState({
-            visible: false,
-          });
-        };
-      
     render() {
+      let { loading } = this.state
           const MyButton =(
-            <Button type="primary" onClick={this.showModal}>
+            <Button type="primary" onClick={()=>{
+              this.setState({
+                visible: true,
+                showStatus:1
+              });
+            }}>
            添加分类
         </Button>
           )
@@ -57,16 +69,24 @@ export default class index extends Component {
            
             <Table  
                     //  dataSource={dataSource}
-                     columns={this.columns} 
+                     columns={this.columns}
+                     bordered={true}
+                     rowKey="_id"
+                     loading={loading} 
             />;
              <Modal
-                    title="Basic Modal"
+                    title="添加"
                     visible={this.state.visible}
                     onOk={this.handleOk}
-                    onCancel={this.handleCancel}
+                    onCancel={()=>{
+                      this.setState({
+                        visible: false,
+                        showStatus:0
+                      });
+                    }}
                     >
-                   <CategoryForm/>
-        </Modal>
+                   <CategoryForm getForm={categgoryForm =>this.form = categgoryForm }/>
+        </Modal>                            
             </Card>
           </div>
         )

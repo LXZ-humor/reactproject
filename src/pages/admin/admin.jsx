@@ -14,7 +14,7 @@ export default class Admin extends Component{
     render(){
         // const local = localid.isLogin;
         // if(!local._id){
-        //    return <Redirect to="/login"/>
+        //     return <Redirect to='/login' />
         // }
         return (
             <Layout>
@@ -25,13 +25,14 @@ export default class Admin extends Component{
                     <Switch>
                         <Route path="/home" component={Home}/>
                         <Route path="/goods" component={Goods}/>
-                        <Route path="/category" component={Category}/>
+                        <Route path="/category" component={Category}/> 
                         <Redirect to="/home"/>
                     </Switch>
                 </Content>
                 <Footer>Footer</Footer>
             </Layout>
         </Layout>
+        
             
         )
     }
