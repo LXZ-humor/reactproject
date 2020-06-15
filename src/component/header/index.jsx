@@ -6,6 +6,7 @@ import menlocal from "../../util/menlocal"
 import local from '../../util/localStorage'
 import menuList from "../../config/menu"
 import {getDate} from "../../util/gettime"
+import MyButton from "../my-button/index"
 class Header extends Component{
     state = { 
         visible: false,
@@ -60,7 +61,7 @@ class Header extends Component{
       <div className="header">
           <div className="header-top">
               欢迎, <span style={{ color: '#F00' }}>{menlocal.isLogin.username}</span> &nbsp; &nbsp;
-              <Button onClick={this.handleCheckout}>退出</Button>
+              <MyButton onClick={this.handleCheckout}>退出</MyButton>
           </div>
           <div className="header-bottom">
               <div className="header-bottom-left">
