@@ -1,7 +1,7 @@
 import React,{Component} from "react"
 
-import { Form, Input } from 'antd'
-
+import { Form, Input,Select } from 'antd'
+const { Option } = Select;
  class CategoryForm extends Component{
      componentWillMount(){
         
@@ -11,7 +11,7 @@ import { Form, Input } from 'antd'
     render(){
         const {getFieldDecorator} = this.props.form
         let {name,flag} = this.props
-        if(flag.f){
+        if(flag){
             return(
                 <Form>
                 <Form.Item>
@@ -31,6 +31,23 @@ import { Form, Input } from 'antd'
         }
         return(
             <Form>
+                 <Form.Item>
+                {
+                    getFieldDecorator('select', {
+                        initialValue: '',
+                        rules: [
+                            { required: true,message: '分类名称必须输入!'}
+                        ]     
+                    })(
+                        <Select key="0">
+                                <Option value="" key="0">--请选择父类--</Option>
+                                <Option value="jack">Jack</Option>
+                                <Option value="lucy">Lucy</Option>
+                                <Option value="tom">Tom</Option>
+                        </Select>
+                    ) 
+                }
+            </Form.Item>
             <Form.Item>
                 {
                     getFieldDecorator('name', {
@@ -43,6 +60,7 @@ import { Form, Input } from 'antd'
                     ) 
                 }
             </Form.Item>
+           
         </Form>
         )
     }

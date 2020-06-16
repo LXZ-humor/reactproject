@@ -10,11 +10,14 @@ import "./index.less"
 export default class index extends Component {
   state = {
     loading: false, // 是否在请求
-    categorys: [], // 所有分类
-    showStatus: 0, // 0 不显示  1 显示添加  2显示修改
-    name: '', // 当前要显示的分类列表的名称
-    _id: '', // 要修改的分类id,
-    parentId: '0' // 父级分类id
+        categorys: [], // 所有分类
+        subCategorys: [], // 所有二级分类
+        allCategorys: [], // 获取所有分类
+        showStatus: 0, // 0 不显示  1 显示添加  2显示修改
+        name: '', // 当前要显示的分类列表的名称
+        _id: '', // 要修改的分类id,
+        parentId: '0', // 父级分类id,
+        parentName: '' // 父级分类的名称
 }
 
 componentWillMount() {
@@ -42,15 +45,16 @@ getCategorys = async () => {
 
 // 显示修改分类输入框
 showUpdate = (category) => {
-    this.category = category
-    let { name,_id } = category
+    // this.category = category
+    // let { name,_id } = category
     
-    // 修改状态
-    this.setState({
-        showStatus: 2,
-        name,
-        _id
-    })
+    // // 修改状态
+    // this.setState({
+    //     showStatus: 2,
+    //     name,
+    //     _id
+    // })
+    console.log(category)
     
 }
 
@@ -153,7 +157,7 @@ render() {
 
             >
 
-                <CategoryForm getForm={categoryForm => this.form = categoryForm} categorys={categorys} parentId={parentId}/>
+                <CategoryForm getForm={categoryForm => this.form = categoryForm} categorys={categorys}/>
             </Modal>
 
             <Modal
