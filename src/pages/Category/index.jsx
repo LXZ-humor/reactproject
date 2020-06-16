@@ -8,156 +8,165 @@ import "./index.less"
 
 
 export default class index extends Component {
-    state = { 
-        visible: false,
-        loading:false,
-        categorys:[],//所有分类
-        showStatus: 0 ,// 0 不显示  1 显示添加  2显示修改
-        parentId: 0,  //顶级父类为0 
-        name: '', // 当前要显示的分类列表的名称
-        _id: '' // 要修改的分类id,
-       };
-        //  渲染之前获取字段
-       componentWillMount(){
-        this.getcolumns();
+  state = {
+    loading: false, // 是否在请求
+    categorys: [], // 所有分类
+    showStatus: 0, // 0 不显示  1 显示添加  2显示修改
+    name: '', // 当前要显示的分类列表的名称
+    _id: '', // 要修改的分类id,
+    parentId: '0' // 父级分类id
+}
+
+componentWillMount() {
+    // 设置表字段信息
+    this.getColumns()
+}
+
+componentDidMount() {
+    this.getCategorys()
+}
+
+// 异步获取分类列表
+getCategorys = async () => {
+    this.setState({ loading: true })
+    const { parentId } = this.state 
+    const result = await reqCategorys(parentId)
+    if (result.status == 1) {
+        const categorys = result.data
+        this.setState({ loading: false, categorys })
+    } else {
+        this.setState({ loading: false})
     }
-        // 渲染之后
-        componentDidMount(){
-          this.getCategorys();
-        }
-        // 测试数据获取字段
-        getcolumns = ()=>{
-            this.columns = [
-                {
-                title: '名称',
-                dataIndex: 'name',
-                
-                },
-                {
-                title: '操作',
-                width:"200px",
-                render:category => (
-                  <span>
-                      <MyButton onClick={()=>{this.updata(category)}}>修改</MyButton>&nbsp; | &nbsp;
-                      <MyButton >查看子分类</MyButton>
-                  </span>
-                  )
-                }
-            ];
-        }
-      
-      // 添加
-        handleOk = e => {
-         
-         this.form.validateFields(async (err,value)=>{
-           if(!err){
-             let {categoryName} = value;
-             let { showStatus } = this.state;
-             let result = ""
-             if(showStatus == 1){
-              //  console.log(categoryName resetFields)
-              result = await reqAddCategory(categoryName)
-              
-              if(result.status == 1){
-                message.success(result.mes)
-                this.getCategorys();
-                
-              }else if(result.status == 0){
-                message.error(result.mes)
-             }
-             
-             }
-           }
-         })
-          this.setState({
-            visible: false,
-          });
-        };
-      //  修改
-      updataOK = (e)=>{
-          let {showStatus} = this.state
-          console.log(showStatus)
-          
-      }
+}
+
+
+// 显示修改分类输入框
+showUpdate = (category) => {
+    this.category = category
+    let { name,_id } = category
     
-      // 获取所有顶级父类
-      getCategorys  =async () =>{
-        this.setState({loading:true});
-        let {parentId} = this.state;
-        let result = await reqCategorys(parentId);
-        if(result.status == 1){
-           const categorys = result.data;
-          this.setState({loading:false,categorys})
-        }else{
-          this.setState({loading:true})
+    // 修改状态
+    this.setState({
+        showStatus: 2,
+        name,
+        _id
+    })
+    
+}
+
+
+// 获取字段
+getColumns = () => {
+    this.columns = [
+        {
+            title: '名称',
+            dataIndex: 'name',
+        },
+        {
+            title: '操作',
+            width: 200,
+            render: category => (
+                <span>
+                    <MyButton onClick={() => {this.showUpdate(category)}}>修改</MyButton>&nbsp; | &nbsp;
+                    <MyButton onClick={() => {this.showSubCategorys(category)}}>查看子分类</MyButton>
+                </span>
+                )
+
+
         }
-      }
-      // 修改当前showStatus状态
-      updata =(category)=>{
-          this.category = category;
-          let {name,_id} = category;
-          this.setState({
-            showStatus:2,
-            name,
-            _id
-          })
-      }
-      // 修改
-    render() {
-      let { loading,categorys,showStatus} = this.state
-          const MyButton =(
-            <Button type="primary" onClick={()=>{
-              this.categorys = {}
-              this.setState({
-                visible: true,
-                showStatus:1
-              });
-            }}>
-           添加分类
-        </Button>
-          )
-        return (
+    ]
+}
+
+// 添加分类的回调  
+handleOk = () => {
+    // 读取用户输入的数据 
+
+    this.form.validateFields(async (err, values) => {
+        if (!err) {
+            const { name, parentId } = values
+            const { showStatus } = this.state
+            let result = '';
+            if (showStatus == 1) {
+              
+                // 发送添加分类的请求 
+                result = await reqAddCategory(name)
+               
+                
+            }
+            // 重置所有表单数据
+            this.form.resetFields()
+            // 重置父组件的showStatus
+            this.setState({ showStatus: 0 })
             
-            <div className="cardDiv">
-            <Card className="card" extra = {MyButton} >
-           
-            <Table  
-                    dataSource={categorys}
-                     columns={this.columns}
-                     bordered={true}
-                     rowKey="_id"
-                     loading={loading}
-                     pagination={{ defaultPageSize: 4, showQuickJumper: true }}
- 
-            />;
-             <Modal
-                    title="添加"
-                    visible={this.state.visible}
-                    onOk={this.updataOK}
-                    onCancel={()=>{
-                      this.setState({
-                        visible: false,
-                        showStatus:0
-                      });
-                    }}
-                    >
-                   <CategoryForm getForm={categgoryForm =>this.form = categgoryForm }/>
-        </Modal> 
-        <Modal
-                    title="修改"
-                    visible={this.state.visible}
-                    onOk={this.handleOk}
-                    onCancel={()=>{
-                      this.setState({
-                        visible: false,
-                        showStatus:0
-                      });
-                    }}
-                    >
-                   <CategoryForm getForm={categgoryForm =>this.form = categgoryForm }/>
-        </Modal>                                                       
-            </Card>
-          </div>
-        )
-    }
+            if (result.status == 1) {
+                this.getCategorys()
+                message.success('添加分类成功!')
+            } else {
+                message.error('添加分类失败!')
+            }   
+        }
+    })
+}
+// 修改父类名称
+updateCate=()=>{
+    this.form.validateFields((err,values)=>{
+      console.log(values)
+      this.form.resetFields()
+      this.setState({ showStatus: 0 })
+    })
+}
+
+
+
+// 用户取消添加/修改操作  
+handleCancel = () => {
+    this.setState({ showStatus: 0 })
+}
+render() {
+    let { loading, categorys, showStatus, name, _id, parentId } = this.state
+
+
+    // 读取更新后的categorys
+
+    const extraButton = (
+        <Button type="primary" onClick={() => {
+            this.categorys = {}
+            this.setState({ showStatus: 1 })
+        }}>添加分类</Button>
+    )
+    return (
+        <Card extra={extraButton} >
+            <Table
+                bordered={true}
+                rowKey="_id"
+                loading={loading}
+                columns={this.columns}
+                dataSource={categorys}
+                pagination={{ defaultPageSize: 4, showQuickJumper: true }}
+
+            />
+            <Modal
+                title="添加分类"
+                visible={showStatus === 1}
+                onOk={this.handleOk}
+                onCancel={this.handleCancel}
+
+            >
+
+                <CategoryForm getForm={categoryForm => this.form = categoryForm} categorys={categorys} parentId={parentId}/>
+            </Modal>
+
+            <Modal
+            title="修改分类"
+            visible={showStatus === 2}
+            onOk={this.updateCate}
+            onCancel={this.handleCancel}
+
+        >
+
+            <CategoryForm getForm={categoryForm => this.form = categoryForm} name={name} flag={{f: true}} _id={_id}/>
+        </Modal>
+        </Card>
+    )
+}
 }

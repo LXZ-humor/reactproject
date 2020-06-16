@@ -3,6 +3,7 @@ var router = express.Router();
 var Category = require("../../public/DB/categorySchema")
 router.post("/addCategory",(req,res)=>{
         let name=req.body.categoryName
+        
        Category.findOne({name}).then(data =>{
                if(!data){
                       let category = new Category({name})
