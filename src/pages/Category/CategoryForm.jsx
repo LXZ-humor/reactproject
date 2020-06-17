@@ -10,8 +10,10 @@ const { Option } = Select;
      }
     render(){
         const {getFieldDecorator} = this.props.form
-        let {name,flag} = this.props
+        let {name,flag,categorys,_id} = this.props
+        
         if(flag){
+           
             return(
                 <Form>
                 <Form.Item>
@@ -26,6 +28,18 @@ const { Option } = Select;
                         ) 
                     }
                 </Form.Item>
+                <Form.Item>
+                    {
+                        getFieldDecorator('_id', {
+                            initialValue: _id,
+                            rules: [
+                                { required: true,message: '分类名称必须输入!'}
+                            ]     
+                        })(
+                            <Input type="hidden"></Input>
+                        ) 
+                    }
+                </Form.Item>
             </Form>
             )
         }
@@ -33,17 +47,17 @@ const { Option } = Select;
             <Form>
                  <Form.Item>
                 {
-                    getFieldDecorator('select', {
+                    getFieldDecorator('parentId', {
                         initialValue: '',
                         rules: [
                             { required: true,message: '分类名称必须输入!'}
                         ]     
                     })(
-                        <Select key="0">
-                                <Option value="" key="0">--请选择父类--</Option>
-                                <Option value="jack">Jack</Option>
-                                <Option value="lucy">Lucy</Option>
-                                <Option value="tom">Tom</Option>
+                        <Select value="0" key="0">
+                                <Option value="0" key="0">--请选择父类--</Option>
+                               {
+                                   categorys.map(item =><Option value={item._id} key={item._id}>{item.name}</Option>)
+                               }
                         </Select>
                     ) 
                 }

@@ -8,7 +8,8 @@ import Header from "../../component/header/index"
 import Home from "../home/index"
 import Category from "../Category/index"
 import Goods from "../Goods/index"
-const {  Footer, Sider, Content } = Layout;
+
+const { Footer, Sider, Content } = Layout;
 
 export default class Admin extends Component{
     render(){
@@ -29,7 +30,8 @@ export default class Admin extends Component{
                         <Redirect to="/home"/>
                     </Switch>
                 </Content>
-                <Footer>Footer</Footer>
+
+                <Footer style={{ textAlign: 'center', color: '#7B68EE', borderTop: '1px solid black'}}>本系统推荐使用最新版谷歌浏览器以获得最佳浏览效果</Footer>
             </Layout>
         </Layout>
         
