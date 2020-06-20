@@ -17,3 +17,6 @@ export const reqAllCategory =()=>{
 export const delectCategorys = (_id) =>{
    return ajax.post("/category/delectCate",{_id})
 }
+export const reqDeleteImg = (name)=>{
+   return ajax.post("/goods/uploading/delect",{name})
+}

@@ -17,12 +17,14 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/public', express.static(__dirname + '/public'))
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login',require("./routes/login"));
 app.use('/category',require("./routes/Category/addCategory"));
+app.use('/goods',require("./routes/Goods/index"))
+
 // app.use("/AddCategory",require("./routes/category/category"))
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

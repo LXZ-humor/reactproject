@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Upload, Icon, Modal } from 'antd';
+import { Upload, Icon, Modal,message } from 'antd';
+import {reqDeleteImg} from "../../api/aj"
 function getBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -13,12 +14,12 @@ export default class PicturesWall extends Component {
         previewVisible: false,
         previewImage: '',
         fileList: [
-          {
-            uid: '-1',
-            name: 'image.png',
-            status: 'done',
-            url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-          }
+          // {
+          //   uid: '-1',
+          //   name: 'image.png',
+          //   status: 'done',
+          //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+          // }
         ]
       };
       handleCancel = () => this.setState({ previewVisible: false });
@@ -33,7 +34,27 @@ export default class PicturesWall extends Component {
         });
       };
     
-      handleChange = ({ fileList }) => this.setState({ fileList });
+      handleChange = async({ file,fileList }) => {
+      if(file.status === "done"){
+          // console.log(file)
+          file = fileList[fileList.length-1]
+          const {name,url}=file.response.data
+          file.name=name;
+          file.url = url;
+          
+      }
+      else if(file.status === "removed"){
+        let delName = file.url.substr(file.url.lastIndexOf("/")+1)
+        // console.log(delName)
+        const result = await reqDeleteImg(delName)
+        if (result.status === 0) {
+          message.success('删除后台上传图片成功!')
+      } else {
+          message.error('删除后台图片失败!')
+      }
+      }
+        this.setState({ fileList })
+      };
     
       render() {
         const { previewVisible, previewImage, fileList } = this.state;
@@ -46,8 +67,9 @@ export default class PicturesWall extends Component {
         return (
             <div className="clearfix">
             <Upload
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              action="/goods/uploading/img"
               listType="picture-card"
+              name = "images"
               fileList={fileList}
               onPreview={this.handlePreview}
               onChange={this.handleChange}
