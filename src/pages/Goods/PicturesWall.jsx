@@ -22,6 +22,8 @@ export default class PicturesWall extends Component {
           // }
         ]
       };
+       // 获取所有已上传图片的数组 
+       getImgs = () => this.state.fileList.map(file => file.url.substr(file.url.lastIndexOf('/')+1))
       handleCancel = () => this.setState({ previewVisible: false });
       handlePreview = async file => {
         if (!file.url && !file.preview) {
@@ -47,11 +49,9 @@ export default class PicturesWall extends Component {
         let delName = file.url.substr(file.url.lastIndexOf("/")+1)
         // console.log(delName)
         const result = await reqDeleteImg(delName)
-        if (result.status === 0) {
-          message.success('删除后台上传图片成功!')
-      } else {
-          message.error('删除后台图片失败!')
-      }
+        if (result.status === 1) {
+          message.error('删除图片失败!')
+      } 
       }
         this.setState({ fileList })
       };
@@ -69,7 +69,7 @@ export default class PicturesWall extends Component {
             <Upload
               action="/goods/uploading/img"
               listType="picture-card"
-              name = "images"
+              name = "image"
               fileList={fileList}
               onPreview={this.handlePreview}
               onChange={this.handleChange}

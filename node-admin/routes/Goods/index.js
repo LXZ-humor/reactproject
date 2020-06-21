@@ -7,8 +7,8 @@ router.post("/uploading/img",(req,res)=>{
     form.uploadDir = __dirname+"/images"
     
     form.parse(req,function(err, fields, files){
-      let name = files.images[0].originalFilename;
-      let url = files.images[0].path;
+      let name = files.image[0].originalFilename;
+      let url = files.image[0].path;
       let uploadingName = url.substr(url.lastIndexOf("\\")+1);
        url = "http://localhost:8080/images/"+uploadingName
        if(!err){

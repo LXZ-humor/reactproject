@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Card,Form, Select, Input, Button  } from 'antd';
+import {reqAllCategory} from "../../api/aj"
 import MyButton from "../../component/my-button/index"
 import PicturesWall from "./PicturesWall"
+import DraftWysiwyg from "./draftWysiwyg"
 import "./addUpdata.less"
 const { Option } = Select;
 const Item= Form.Item;
@@ -14,15 +16,17 @@ class addUpdata extends Component {
         super(props)
         // 创建ref容器 
         this.picRef = React.createRef()
+        // 创建详情
+        this.richText = React.createRef()
     }
     // 处理用户提交
     getcategorys = async () => {
-        // const result = await reqAllCategory()
-        // if (result.status === 0) {
-        //     this.setState({
-        //         categorys: result.data
-        //     })
-        // }
+        const result = await reqAllCategory()
+        if (result.status == "1") {
+            this.setState({
+                categorys: result.resdata
+            })
+        }
     }
 
     // 自定义商品价格验证器
@@ -49,7 +53,8 @@ class addUpdata extends Component {
             if (!err) {
               
                const { name, desc, price, categoryId} = values
-                
+            //    console.log(this.picRef.current.getImgs())
+               console.log(this.richText.current.getDetail())
             }
         })
     }
@@ -123,7 +128,9 @@ class addUpdata extends Component {
                     <Item label="商品图片">
                         <PicturesWall ref={this.picRef}/>
                     </Item>
-
+                    <Item label="详情"  wrapperCol={{ span: 20}}>
+                        <DraftWysiwyg ref={this.richText}/>
+                    </Item>
                     <Item label="">
                         <Button type="primary" htmlType="submit">提交</Button>
                     </Item>
