@@ -20,3 +20,5 @@ export const delectCategorys = (_id) =>{
 export const reqDeleteImg = (name)=>{
    return ajax.post("/goods/uploading/delect",{name})
 }
+//添加商品
+export const reqAddProduct = (name, desc, price, categoryId, imgs, detail) => ajax.post('/goods/uploading/add', { name, desc, price, categoryId, imgs, detail })

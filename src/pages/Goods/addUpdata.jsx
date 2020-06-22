@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card,Form, Select, Input, Button  } from 'antd';
-import {reqAllCategory} from "../../api/aj"
+import {reqAllCategory,reqAddProduct} from "../../api/aj"
 import MyButton from "../../component/my-button/index"
 import PicturesWall from "./PicturesWall"
 import DraftWysiwyg from "./draftWysiwyg"
@@ -49,12 +49,13 @@ class addUpdata extends Component {
         event.preventDefault()  
         
         // 进行表单的统一验证
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async(err, values) => {
             if (!err) {
-              
-               const { name, desc, price, categoryId} = values
-            //    console.log(this.picRef.current.getImgs())
-               console.log(this.richText.current.getDetail())
+                const { name, desc, price, categoryId} = values
+                const imgs =this.picRef.current.getImgs().toString()
+                const detail=this.richText.current.getDetail()
+                 let result = await reqAddProduct(name, desc, price, categoryId, imgs, detail)
+               
             }
         })
     }

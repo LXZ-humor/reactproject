@@ -1,5 +1,6 @@
 let express = require("express")
 let multiparty = require("multiparty")
+let Goods = require("../../public/DB/goodsSchema")
 let fs = require("fs")
 let router = express.Router();
 router.post("/uploading/img",(req,res)=>{
@@ -48,5 +49,22 @@ router.post("/uploading/delect",(req,res)=>{
 
        }
     })
+})
+//添加商品
+router.post("/uploading/add",(req,res)=>{
+    let {name, desc, price, categoryId, imgs, detail} =  req.body
+    imgs = imgs.split(",")
+    let data = {
+        name, desc, price, categoryId, imgs, detail
+    }
+    let goods = new Goods(data)
+    goods.save((err,resdata)=>{
+        if(!err){
+            console.log("添加成功")
+        }else{
+            console.log("添加失败")
+        }
+    })
+    
 })
 module.exports = router;
