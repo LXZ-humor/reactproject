@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card,Form, Select, Input, Button  } from 'antd';
+import { Card,Form, Select, Input, Button, message  } from 'antd';
 import {reqAllCategory,reqAddProduct} from "../../api/aj"
 import MyButton from "../../component/my-button/index"
 import PicturesWall from "./PicturesWall"
@@ -55,7 +55,12 @@ class addUpdata extends Component {
                 const imgs =this.picRef.current.getImgs().toString()
                 const detail=this.richText.current.getDetail()
                  let result = await reqAddProduct(name, desc, price, categoryId, imgs, detail)
-               
+               if(result.status === 0){
+                   message.success(result.mes)
+                   this.props.history.push("/goods")
+               }else{
+                message.error(result.mes)
+               }
             }
         })
     }

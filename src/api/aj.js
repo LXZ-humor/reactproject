@@ -22,3 +22,12 @@ export const reqDeleteImg = (name)=>{
 }
 //添加商品
 export const reqAddProduct = (name, desc, price, categoryId, imgs, detail) => ajax.post('/goods/uploading/add', { name, desc, price, categoryId, imgs, detail })
+// 获取所有商品
+export const reqGoodsList =()=>{
+   return ajax.post("/goods/getList")
+}
+// 修改状态
+export const reqSetstatus = (_id,status) =>{
+
+   return ajax.post("/goods/setstatus",{_id,status})
+}

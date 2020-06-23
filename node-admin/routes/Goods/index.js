@@ -1,7 +1,8 @@
 let express = require("express")
 let multiparty = require("multiparty")
 let Goods = require("../../public/DB/goodsSchema")
-let fs = require("fs")
+let fs = require("fs");
+const { count } = require("console");
 let router = express.Router();
 router.post("/uploading/img",(req,res)=>{
     let form = new multiparty.Form();
@@ -60,11 +61,34 @@ router.post("/uploading/add",(req,res)=>{
     let goods = new Goods(data)
     goods.save((err,resdata)=>{
         if(!err){
-            console.log("添加成功")
+            res.json({status:0,mes:"添加成功"})
         }else{
-            console.log("添加失败")
+            res.json({status:1,mes:"添加失败"})
         }
     })
     
+})
+// 获取所有商品
+router.post("/getList",(req,res)=>{
+
+    Goods.find({}).then(resdata =>{
+        res.json({status:0,resdata})
+    }).catch(err =>{res.json({status:1})})
+})
+// 修改状态
+router.post("/setstatus",(req,res)=>{
+    let {_id,status}= req.body
+    console.log(req.body.status)
+   if(status == 1){
+    
+       Goods.update({_id},{$set:{status:0}}).then(data =>{
+           res.json({status:0})
+       })
+   }else if(status == 0){
+    
+       Goods.update({_id},{$set:{status:1}}).then(data =>{
+        res.json({status:0})
+    })
+   }
 })
 module.exports = router;
