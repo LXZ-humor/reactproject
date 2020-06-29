@@ -18,8 +18,18 @@ router.post("/",(req,res)=>{
               return
           } else {
               // 如果没有找到该用户则自动添加一个新用户
-              res.json({ status: 1, mes: '用户名或密码不正确!'})
-              return
+            //  console.log(loginData)
+            let user = new User(loginData)
+            user.save((err,resdata)=>{
+                if(!err){
+                    res.json({status:0,mes:"添加成功"})
+                }else{
+                    console.log(err)
+                    res.json({status:1,mes:"添加失败"})
+                }
+            })
+            //   res.json({ status: 1, mes: '用户名或密码不正确!'})
+            //   return
           }
       }
    })

@@ -53,6 +53,7 @@ export default class DraftWysiwyg extends Component {
             
               editorStyle={{height: 200, border: '1px solid #000', paddingLeft: '10px'}}
               onEditorStateChange={this.onEditorStateChange}
+              value = "123"
               toolbar={{
                 image: { uploadCallback: this.uploadImageCallBack, alt: { present: true, mandatory: true } },
               }}

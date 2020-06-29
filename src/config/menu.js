@@ -21,5 +21,16 @@ export default [
             }
         ]
         
+    },{
+        title:"用户",
+        key:"/user",
+        Icon:"user",
+        children:[
+            {
+                title:"用户管理",
+                key:"/users",
+                Icon:"user"
+            }
+        ]
     }
 ]

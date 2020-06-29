@@ -24,7 +24,7 @@ app.use('/users', usersRouter);
 app.use('/login',require("./routes/login"));
 app.use('/category',require("./routes/Category/addCategory"));
 app.use('/goods',require("./routes/Goods/index"))
-
+app.use("/User",require("./routes/Users/index"))
 // app.use("/AddCategory",require("./routes/category/category"))
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

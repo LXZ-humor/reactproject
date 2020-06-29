@@ -8,12 +8,13 @@ import Header from "../../component/header/index"
 import Home from "../home/index"
 import Category from "../Category/index"
 import Goods from "../Goods/index"
-
+import Users from "../user/index"
 const { Footer, Sider, Content } = Layout;
 
 export default class Admin extends Component{
     render(){
         // const local = localid.isLogin;
+        // console.log(local)
         // if(!local._id){
         //     return <Redirect to='/login' />
         // }
@@ -26,7 +27,8 @@ export default class Admin extends Component{
                     <Switch>
                         <Route path="/home" component={Home}/>
                         <Route path="/goods" component={Goods}/>
-                        <Route path="/category" component={Category}/> 
+                        <Route path="/category" component={Category}/>
+                        <Route path="/users" component={Users}/>  
                         <Redirect to="/home"/>
                     </Switch>
                 </Content>

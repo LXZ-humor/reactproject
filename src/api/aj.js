@@ -31,3 +31,15 @@ export const reqSetstatus = (_id,status) =>{
 
    return ajax.post("/goods/setstatus",{_id,status})
 }
+// 获取所有用户信息
+export const reqUserInfo = () =>{
+   return ajax.post("/User/getuser")
+}
+// 修改用户信息
+export const reqUpdataInfo=(username,_id)=>{
+   return ajax.post("/User/upuser",{username,_id})
+}
+// 删除用户
+export const reqdelUser =(_id)=>{
+   return ajax.post("/user/delUser",{_id})
+}

@@ -124,7 +124,7 @@ class addUpdata extends Component {
                             <Select>
                                 <Option value="" key="">--请选择--</Option>
                                 {
-                                    categorys.map(cate => <Option value={cate._id} key={cate._id}>{cate.name}</Option>)
+                                    categorys.map(cate => <Option value={cate.name} key={cate._id}>{cate.name}</Option>)
                                 }
 
                             </Select>
