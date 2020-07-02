@@ -1,8 +1,9 @@
 import React,{Component}  from "react"
-import {Card,Table,Modal,message} from "antd"
+import {Card,Table,Modal,message,Button,Input} from "antd"
 import MyButton from "../../component/my-button/index"
-import {reqUserInfo,reqUpdataInfo,reqdelUser} from "../../api/aj"
+import {reqUserInfo,reqUpdataInfo,reqdelUser,reqUser} from "../../api/aj"
 import MyInput from "../user/input"
+const { Search } = Input
 export default class Users extends Component{
     state = {
         // 获取所有用户信息
@@ -11,6 +12,7 @@ export default class Users extends Component{
         visible: false,
         username:[]
     }
+    mySearch=React.createRef()
     // 获取字段
     getColumns =() =>{
         this.columns = [
@@ -35,6 +37,7 @@ export default class Users extends Component{
     }
     // 操作
     optHandle =(info)=>{
+       
         return(
             <span>
                 <MyButton onClick={()=>{this.upinfo(info)}}>修改</MyButton>&nbsp;&nbsp;<MyButton onClick={()=>{this.delUser(info)}}>删除</MyButton>
@@ -44,6 +47,7 @@ export default class Users extends Component{
     }
     // 修改信息
     upinfo = (info)=>{
+       
        let username = info
        this.setState({visible: true,username});
       
@@ -82,10 +86,11 @@ export default class Users extends Component{
           });
     }
     componentWillMount(){
-      
+       
         this.getColumns()
     }
     componentDidMount(){
+        this.mySearch=React.createRef()
         this.getUserInfo()
     }
     // 获取所有登录信息
@@ -102,11 +107,35 @@ export default class Users extends Component{
                 this.setState({loading:true,})
        }
     }
+    // 搜索用户current.value
+    Search =async(value)=>{
+        let {userinfo} = this.state
+        let username = value
+        let result = await reqUser(username)
+        if(result.status === 0){
+            let userinfo = result.resdata
+            this.setState({userinfo})
+        }
+       
+    }
     render(){
         let {loading,userinfo,username}= this.state
+        const title = (
+            <span>
+              <Search   placeholder="搜索用户" 
+                        onSearch={(value)=>{this.Search(value)}} 
+                        enterButton 
+                        style={{width:200}}
+                        />
+            
+            </span>
+        )
+        const extra = (
+            <MyButton onClick={this.getUserInfo}>返回</MyButton>
+        )
         return(
             <div>
-            <Card  className="Card">
+            <Card  className="Card" title={title} extra={extra}>
             <Table 
                     dataSource={userinfo} 
                     

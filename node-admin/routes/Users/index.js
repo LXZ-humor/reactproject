@@ -28,4 +28,14 @@ router.post("/delUser",(req,res)=>{
         }
     })
 })
+// 获取一个用户信息
+router.get("/reqGetUser",(req,res)=>{
+    let {username}=req.query
+    User.find({username}).then(resdata=>{
+      res.json({status:0,resdata})
+       
+    }).catch(err=>{
+        res.json({status:2})
+    })
+})
 module.exports = router

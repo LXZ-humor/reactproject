@@ -26,10 +26,14 @@ export const reqAddProduct = (name, desc, price, categoryId, imgs, detail) => aj
 export const reqGoodsList =()=>{
    return ajax.post("/goods/getList")
 }
-// 修改状态
+// 修改商品状态
 export const reqSetstatus = (_id,status) =>{
 
    return ajax.post("/goods/setstatus",{_id,status})
+}
+// 获取商品详情信息
+export const reqGoodsParticulars=(_id)=>{
+   return ajax.post("/goods/particulars",{_id})
 }
 // 获取所有用户信息
 export const reqUserInfo = () =>{
@@ -41,5 +45,10 @@ export const reqUpdataInfo=(username,_id)=>{
 }
 // 删除用户
 export const reqdelUser =(_id)=>{
-   return ajax.post("/user/delUser",{_id})
+   return ajax.post("/User/delUser",{_id})
+}
+// 获取一个用户
+
+export const reqUser =(username)=>{
+   return ajax.get("/User/reqGetUser?username="+username);
 }

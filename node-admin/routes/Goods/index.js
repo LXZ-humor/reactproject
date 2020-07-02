@@ -91,4 +91,15 @@ router.post("/setstatus",(req,res)=>{
     })
    }
 })
+// 获取商品详情信息
+router.post("/particulars",(req,res)=>{
+    let{_id}=req.body
+    
+    Goods.find({_id}).then(resdata=>{
+       
+        res.json({status:0,resdata})
+    }).catch(err=>{
+        res.json({status:1})
+    })
+})
 module.exports = router;

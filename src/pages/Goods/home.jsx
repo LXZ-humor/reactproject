@@ -1,6 +1,8 @@
 import React,{Component} from "react"
+import {Link} from "react-router-dom"
 import { Card,Table,Select,Input,Button, Icon} from 'antd';
 import {reqGoodsList,reqSetstatus} from "../../api/aj"
+import Myparticulars from "./particulars"
 import MyButton from "../../component/my-button/index"
 import "./home.less"
 const { Option } = Select;
@@ -41,15 +43,16 @@ export default class Home extends Component{
     }
     // 操作
     optHandle =(product) =>{
+    
        return (
             <span> 
-                <MyButton onClick={()=>{this.props.history.push("/goods/addUpdata")}} flag={true} data={product}>查看详情</MyButton>
-                <MyButton onClick={()=>{console.log(product)}}>删除</MyButton>
+              <Link to={`/goods/particulars/${product._id}`}>详情</Link>
+                {/* <MyButton onClick={()=>{this.particulars(product)}}>删除</MyButton> */}
             </span>
        )
     
     }
-   
+    
     // 获取字段
     getColumns =()=>{
         this.columns  = [
